@@ -29,21 +29,34 @@ public:
      * @param val       the value needs to be stored in Hashmap
      * @param next      Hashnode pointer that points to the next Hashnode
      */
-    Hashnode(Object* key, Object* val);
+    Hashnode(Object* key, Object* val) {
+        this->_key = key;
+        this->_value = val;
+        this->next = nullptr;
+    }
 
     /**
      * Hashnode constructor that make a copy of the given Hashnode
      * @param node      the node that needs to be copied
      */
-    Hashnode(Hashnode* node);
+    Hashnode(Hashnode* node) {
+        this->_key = node->_key;
+        this->_value = node->_value;
+        this->next = nullptr;
+    }
 
     /**
     * Hashnode destructor that delete Hashnode object
     */
-    ~Hashnode();
+    ~Hashnode() {
 
-    bool equals(Object* object)
+    }
 
-    size_t hash();
+    bool equals(Object* object) {
+
+    }
+
+    size_t hash() {
+        return this->_key->hash() + this->_value->hash();
+    }
 };
-

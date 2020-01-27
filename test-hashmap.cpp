@@ -114,9 +114,9 @@ void test6() {
     String * key_3 = new String("NEU");
     h1->put(key_1, val_1);
     h1->put(key_2, val_2);
-    t_true(h1->containsKey(key_1));
-    t_true(h1->containsKey(key_2));
-    t_false(h1->containsKey(key_3));
+    t_true(h1->contains_key(key_1));
+    t_true(h1->contains_key(key_2));
+    t_false(h1->contains_key(key_3));
     OK("6");
 }
 
@@ -173,7 +173,7 @@ void test7() {
     h1->put(key_5, val_5);
     h1->put(key_6, val_6);
     t_true(h1->get_size() == 6);
-    t_true(h1->get_cap() == 16);
+    t_true(h1->get_capacity() == 16);
     h1->put(key_7, val_7);
     h1->put(key_8, val_8);
     h1->put(key_9, val_9);
@@ -188,7 +188,7 @@ void test7() {
     t_true(h1->get_size() == 16);
     h1->put(key_17, val_17);
     t_true(h1->get_size() == 17);
-    t_true(h1->get_cap() == 32);
+    t_true(h1->get_capacity() == 32);
     OK("7");
 }
 
@@ -208,7 +208,7 @@ void test8() {
     h1->put(key_2, val_2);
     h1->put(key_3, val_3);
     Object** keys_array;
-    keys_array =  h1->keys();
+    keys_array =  h1->key_set();
     t_true(keys_array[0]->equals(key_1));
     t_true(keys_array[1]->equals(key_2));
     t_true(keys_array[2]->equals(key_3));
