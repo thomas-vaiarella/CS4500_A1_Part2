@@ -11,6 +11,11 @@
 class Object {
 
 public:
-    virtual size_t hash();
-    virtual bool equals(Object* object);
+    virtual size_t hash() {
+        return reinterpret_cast<size_t>(this);
+    }
+
+    virtual bool equals(Object* object) {
+        return this == object;
+    }
 };

@@ -79,16 +79,33 @@ public:
      * @return  the previous value associated with key, or null if there was no mapping for key.
      */
     Object* put(Object* key, Object* val) {
+        // TODO: If key already exists, gg size and hashcode. DO THIS.
         int index = index_for(key);
         Hashnode* prev = nullptr;
         Hashnode* node = *(this->table + index);
-        while (node->next != nullptr) {
+        Hashnode * new_node = new Hashnode(key, val);
+        if (node == nullptr) {
+            *(this->table + index) = new_node;
+            this->size++;
+            this->hash_code += new_node->hash();
+            return val;
+        }
+        while (node != nullptr && !node->_key->equals(key)) {
             prev = node;
             node = node->next;
         }
-        prev->next = new Hashnode(key, val);
-        this->hash_code += prev->hash();
+        if (node != nullptr) {
+            this->hash_code -= node->hash();
+            this->size--;
+            *node = new_node;
+        }
+        if (prev != nullptr) {
+            new_node->next = prev->next;
+            prev->next = new_node;
+        }
         this->size++;
+        this->hash_code += new_node->hash();
+        return val;
     }
 
 
@@ -98,7 +115,7 @@ public:
      * @return  the value to which the specified key is mapped, or null if this map contains no mapping for the key
      */
     Object* get(Object* key) {
-        return getHashnode(key);
+        return getHashnode(key)->_value;
     }
 
 
@@ -121,19 +138,21 @@ public:
         int index = index_for(key);
         Hashnode* prev = nullptr;
         Hashnode* node = *(this->table + index);
-        while (node != nullptr && !node->_key->equals(key)) {
+        while (node != nullptr && node->_key != nullptr && !node->_key->equals(key)) {
             prev = node;
             node = node->next;
+        }
+        if (node->_key != nullptr) {
+            return NULL;
         }
         this->hash_code -= node->hash();
         Object* value = node->_value;
         if (prev != nullptr) {
             prev->next = node->next;
         } else {
-            delete node;
-            *node = node->next; 
+            *(this->table + index) = nullptr; // this is always the first element in the linked list
+            // delete node TODO
         }
-
         return value;
     }
 

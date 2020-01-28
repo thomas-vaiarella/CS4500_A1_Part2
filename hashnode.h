@@ -35,15 +35,15 @@ public:
         this->next = nullptr;
     }
 
-    /**
-     * Hashnode constructor that make a copy of the given Hashnode
-     * @param node      the node that needs to be copied
-     */
-    Hashnode(Hashnode* node) {
-        this->_key = node->_key;
-        this->_value = node->_value;
-        this->next = nullptr;
-    }
+    // /**
+    //  * Hashnode constructor that make a copy of the given Hashnode
+    //  * @param node      the node that needs to be copied
+    //  */
+    // Hashnode(Hashnode* node) {
+    //     this->_key = node->_key;
+    //     this->_value = node->_value;
+    //     this->next = nullptr;
+    // }
 
     /**
     * Hashnode destructor that delete Hashnode object
