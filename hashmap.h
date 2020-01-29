@@ -26,7 +26,7 @@ public:
      * the default initial capacity 16
     */
     Hashmap() {
-        this->table = new Hashnode*[16];
+        this->table = new Hashnode*[16]();
         this->capacity = 16;
         this->size = 0;
         this->hash_code = 0;
@@ -74,7 +74,7 @@ public:
     void resize() {
         Hashnode** nodes = this->nodes();
         this->capacity *= 2;
-        Hashnode** new_table = new Hashnode*[this->capacity];
+        Hashnode** new_table = new Hashnode*[this->capacity]();
         int old_size = this->size;
         this->size = 0;
         this->hash_code = 0;
@@ -239,7 +239,7 @@ public:
      */
      Hashnode* getHashnode(Object* key) {
         int index = index_for(key);
-        Hashnode* node = *(this->table + index);
+        Hashnode* node = this->table[index];
         while (node != nullptr && !node->_key->equals(key)) {
             node = node->next;
         }
