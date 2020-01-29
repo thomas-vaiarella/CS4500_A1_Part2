@@ -63,11 +63,26 @@ public:
         return key->hash() & (this->capacity - 1);
     }
 
+    // Private helper for resize
+    int index_for(Object* key, size_t new_capacity) {
+        return key->hash() & (new_capacity - 1);
+    }
+
     /**
      * resize of inner array when size hits its threshold(capacity)
      */
     void resize() {
-    
+        Hashnode** nodes = this->nodes();
+        this->capacity *= 2;
+        Hashnode** new_table = new Hashnode*[this->capacity];
+        int old_size = this->size;
+        this->size = 0;
+        this->hash_code = 0;
+        this->table = new_table;
+        for (int i = 0; i < old_size; i++) {
+            Hashnode * node = nodes[i];
+            this->put(node->_key, node->_value);
+        }
     }
 
 
@@ -79,7 +94,9 @@ public:
      * @return  the previous value associated with key, or null if there was no mapping for key.
      */
     Object* put(Object* key, Object* val) {
-        // TODO: If key already exists, gg size and hashcode. DO THIS.
+        if (!this->contains_key(key) && size == capacity) {
+            this->resize();
+        }
         int index = index_for(key);
         Hashnode* prev = nullptr;
         Hashnode* node = *(this->table + index);
@@ -94,17 +111,19 @@ public:
             prev = node;
             node = node->next;
         }
+
+        // Replacement
         if (node != nullptr) {
             this->hash_code -= node->hash();
             this->size--;
-            *node = new_node;
+            *node = *new_node;
         }
         if (prev != nullptr) {
             new_node->next = prev->next;
             prev->next = new_node;
         }
-        this->size++;
         this->hash_code += new_node->hash();
+        this->size++;
         return val;
     }
 
@@ -142,7 +161,7 @@ public:
             prev = node;
             node = node->next;
         }
-        if (node->_key != nullptr) {
+        if (node == nullptr) {
             return NULL;
         }
         this->hash_code -= node->hash();
@@ -150,10 +169,25 @@ public:
         if (prev != nullptr) {
             prev->next = node->next;
         } else {
-            *(this->table + index) = nullptr; // this is always the first element in the linked list
+            *(this->table + index) = node->next; // this is always the first element in the linked list
             // delete node TODO
         }
         return value;
+    }
+
+    // Private helper to get every Hashnode
+    Hashnode** nodes() {
+        Hashnode** nodes = new Hashnode*[this->size];
+        int counter = 0;
+        for (int i = 0; i < this->capacity; i++) {
+            Hashnode* node = *(this->table + i);
+            while (node != nullptr) {
+                *(nodes + counter) = node;
+                node = node->next;
+                counter++;
+            }
+        }
+        return nodes;
     }
 
 
@@ -161,17 +195,11 @@ public:
      * @return  a list of the keys contained in this map
      */
     Object** key_set() {
+        Hashnode** nodes = this->nodes();
         Object** keys = new Object*[this->size];
-        int counter = 0;
-        for (int i = 0; i < this->capacity; i++) {
-            Hashnode* node = *(this->table + i);
-            while (node != nullptr) {
-                *(keys + counter) = node->_key;
-                node = node->next;
-                counter++;
-            }
+        for (int i = 0; i < this->size; i++) {
+            keys[i] = nodes[i]->_key;
         }
-
         return keys;
     }
 
@@ -180,18 +208,12 @@ public:
      * @return  a list of values contained in this map
      */
     Object** values() {
-        Object** value_list = new Object*[this->size];
-        int counter = 0;
-        for (int i = 0; i < this->capacity; i++) {
-            Hashnode* node = *(this->table + i);
-            while (node != nullptr) {
-                *(value_list + counter) = node->_value;
-                node = node->next;
-                counter++;
-            }
+        Hashnode** nodes = this->nodes();
+        Object** vals_ = new Object*[this->size];
+        for (int i = 0; i < this->size; i++) {
+            vals_[i] = nodes[i]->_value;
         }
-
-        return value_list; 
+        return vals_;
     }
 
     size_t hash() {

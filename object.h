@@ -12,7 +12,9 @@ class Object {
 
 public:
     virtual size_t hash() {
-        return reinterpret_cast<size_t>(this);
+        size_t hash_ = reinterpret_cast<size_t>(this);
+        size_t x = 3145889 & 15;
+        return hash_;
     }
 
     virtual bool equals(Object* object) {

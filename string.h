@@ -42,10 +42,10 @@ public:
     }
 
 public:
-    size_t hashCode() {
+    size_t hash() {
         size_t v = 0;
         for (int i = 0; i < strlen(this->data); i++) {
-        v = data[i] + (51 * v); 
+            v = data[i] + (7 * v); 
         }
         return v;
     }
