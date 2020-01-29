@@ -63,11 +63,6 @@ public:
         return key->hash() & (this->capacity - 1);
     }
 
-    // Private helper for resize
-    int index_for(Object* key, size_t new_capacity) {
-        return key->hash() & (new_capacity - 1);
-    }
-
     /**
      * resize of inner array when size hits its threshold(capacity)
      */
@@ -99,10 +94,10 @@ public:
         }
         int index = index_for(key);
         Hashnode* prev = nullptr;
-        Hashnode* node = *(this->table + index);
+        Hashnode* node = this->table[index];
         Hashnode * new_node = new Hashnode(key, val);
         if (node == nullptr) {
-            *(this->table + index) = new_node;
+            this->table[index] = new_node;
             this->size++;
             this->hash_code += new_node->hash();
             return val;
@@ -156,7 +151,7 @@ public:
     Object* remove(Object* key) {
         int index = index_for(key);
         Hashnode* prev = nullptr;
-        Hashnode* node = *(this->table + index);
+        Hashnode* node = this->table[index];
         while (node != nullptr && node->_key != nullptr && !node->_key->equals(key)) {
             prev = node;
             node = node->next;
@@ -169,7 +164,7 @@ public:
         if (prev != nullptr) {
             prev->next = node->next;
         } else {
-            *(this->table + index) = node->next; // this is always the first element in the linked list
+            this->table[index] = node->next; // this is always the first element in the linked list
             // delete node TODO
         }
         return value;
@@ -180,9 +175,9 @@ public:
         Hashnode** nodes = new Hashnode*[this->size];
         int counter = 0;
         for (int i = 0; i < this->capacity; i++) {
-            Hashnode* node = *(this->table + i);
+            Hashnode* node = this->table[i];
             while (node != nullptr) {
-                *(nodes + counter) = node;
+                nodes[counter] = node;
                 node = node->next;
                 counter++;
             }
