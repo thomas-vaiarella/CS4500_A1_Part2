@@ -220,7 +220,8 @@ void test8() {
     t_true(keys_array[0]->equals(key_1));
     t_true(keys_array[1]->equals(key_2));
     t_true(keys_array[2]->equals(key_3));
-    delete[] h1, key_1, key_2, key_3, val_1, val_2, val_3, keys_array;
+    delete h1, key_1, key_2, key_3, val_1, val_2, val_3;
+    delete[] keys_array;
     OK("8");
 }
 
@@ -246,7 +247,8 @@ void test9() {
     t_true(values_array[0]->equals(val_1));
     t_true(values_array[1]->equals(val_2));
     t_true(values_array[2]->equals(val_3));
-    delete[] h1, key_1, val_1, key_2, val_2, key_3, val_3, values_array;
+    delete h1, key_1, val_1, key_2, val_2, key_3, val_3;
+    delete[] values_array;
     OK("9");
 }
 

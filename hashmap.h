@@ -119,11 +119,9 @@ public:
         }
         if (prev != nullptr) {
             new_node->next = prev->next;
+            prev->next = new_node;
         }
         this->hash_code += new_node->hash();
-        delete prev->next;
-        prev->next = new_node;
-        this->hash_code += prev->hash();
         this->size++;
         return val;
     }
