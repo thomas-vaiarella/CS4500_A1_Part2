@@ -98,19 +98,14 @@ void test5() {
     String * val_2 = new String("2");
     h1->put(key_1, val_1);
     h1->put(key_2, val_2);
-    String* out1 = h1->remove(key_1);
-    String* out2 = h1->remove(key2);
-    t_true(h1->remove(key_1)->equals(val_1));
-    t_false(h1->remove(key_2)->equals(val_1));
+    String* out1 = dynamic_cast<String*>(h1->remove(key_1));
+    String* out2 = dynamic_cast<String*>(h1->remove(key_2));
+    t_true(out1->equals(val_1));
+    t_false(out2->equals(val_1));
     t_true(h1->remove(key_1) == NULL);
     delete h1, key_1, val_1, key_2, val_2, out1, out2;
     OK("5");
 }
-
-// TODO HERE DONT MISS THIS
-
-// DELETE ME AND KEEP DELETING OBJECTS PLS DO IT NOW THX
-
 /**
  * test cases for containsKey() method
  * testing on if an associated value of input key is existed in the hashmap
@@ -127,6 +122,7 @@ void test6() {
     t_true(h1->contains_key(key_1));
     t_true(h1->contains_key(key_2));
     t_false(h1->contains_key(key_3));
+    delete h1, key_1, val_1, key_2, val_2, key_3;
     OK("6");
 }
 
@@ -199,6 +195,8 @@ void test7() {
     h1->put(key_17, val_17);
     t_true(h1->get_size() == 17);
     t_true(h1->get_capacity() == 32);
+    delete h1, key_1, key_2, key_3, key_4, key_5, key_6, key_7, key_8, key_9, key_10, key_11, key_12, key_13, key_14, key_15, key_16, key_17;
+    delete val_1, val_2, val_3, val_4, val_5, val_6, val_7, val_8, val_9, val_10, val_11, val_12, val_13, val_14, val_15, val_16, val_17;
     OK("7");
 }
 
@@ -222,7 +220,7 @@ void test8() {
     t_true(keys_array[0]->equals(key_1));
     t_true(keys_array[1]->equals(key_2));
     t_true(keys_array[2]->equals(key_3));
-    delete[] keys_array;
+    delete[] h1, key_1, key_2, key_3, val_1, val_2, val_3, keys_array;
     OK("8");
 }
 
@@ -248,13 +246,9 @@ void test9() {
     t_true(values_array[0]->equals(val_1));
     t_true(values_array[1]->equals(val_2));
     t_true(values_array[2]->equals(val_3));
-    delete[] values_array;
+    delete[] h1, key_1, val_1, key_2, val_2, key_3, val_3, values_array;
     OK("9");
 }
-
-
-
-
 
 int main() {
     test1();
