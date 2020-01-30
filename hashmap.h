@@ -73,11 +73,13 @@ public:
         int old_size = this->size;
         this->size = 0;
         this->hash_code = 0;
+        delete table;
         this->table = new_table;
         for (int i = 0; i < old_size; i++) {
             Hashnode * node = nodes[i];
             this->put(node->_key, node->_value);
         }
+        delete[] nodes;
     }
 
 
@@ -97,6 +99,7 @@ public:
         Hashnode* node = this->table[index];
         Hashnode * new_node = new Hashnode(key, val);
         if (node == nullptr) {
+            delete this->table[index];
             this->table[index] = new_node;
             this->size++;
             this->hash_code += new_node->hash();
@@ -111,6 +114,7 @@ public:
         if (node != nullptr) {
             this->hash_code -= node->hash();
             this->size--;
+            delete node;
             *node = *new_node;
         }
         if (prev != nullptr) {
@@ -165,7 +169,6 @@ public:
             prev->next = node->next;
         } else {
             this->table[index] = node->next; // this is always the first element in the linked list
-            // delete node TODO
         }
         return value;
     }
@@ -195,6 +198,7 @@ public:
         for (int i = 0; i < this->size; i++) {
             keys[i] = nodes[i]->_key;
         }
+        delete[] nodes;
         return keys;
     }
 
@@ -208,6 +212,7 @@ public:
         for (int i = 0; i < this->size; i++) {
             vals_[i] = nodes[i]->_value;
         }
+        delete[] nodes;
         return vals_;
     }
 
@@ -220,13 +225,16 @@ public:
         Hashmap* other_map = dynamic_cast<Hashmap*>(object);
         if (other_map == nullptr) return false;
 
+        bool judge = true;
         Object** keys = this->key_set();
         for (int i = 0; i < this->size; i++) {
             if (!(this->get(keys[i])->equals(other_map->get(keys[i])))) {
-                return false;
+                judge = false;
+                break;
             }
         }
-        return true;
+        delete[] keys;
+        return judge;
     }
 
     /**
