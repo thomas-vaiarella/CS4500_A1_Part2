@@ -200,58 +200,6 @@ void test7() {
     OK("7");
 }
 
-/**
- * test cases for keys() function
- * testing on keys() function that return all keys that exist in the hashmap
- */
-void test8() {
-    Hashmap* h1 = new Hashmap();
-    String * key_1 = new String("A");
-    String * val_1 = new String("1");
-    String * key_2 = new String("B");
-    String * val_2 = new String("2");
-    String * key_3 = new String("C");
-    String * val_3 = new String("3");
-    h1->put(key_1, val_1);
-    h1->put(key_2, val_2);
-    h1->put(key_3, val_3);
-    Object** keys_array;
-    keys_array =  h1->key_set();
-    t_true(keys_array[0]->equals(key_1));
-    t_true(keys_array[1]->equals(key_2));
-    t_true(keys_array[2]->equals(key_3));
-    delete h1, key_1, key_2, key_3, val_1, val_2, val_3;
-    delete[] keys_array;
-    OK("8");
-}
-
-
-/**
- * test cases for values() function
- * testing on keys() function that return all values that exist in the hashmap
- */
-void test9() {
-
-    Hashmap* h1 = new Hashmap();
-    String * key_1 = new String("A");
-    String * val_1 = new String("1");
-    String * key_2 = new String("B");
-    String * val_2 = new String("2");
-    String * key_3 = new String("C");
-    String * val_3 = new String("3");
-    h1->put(key_1, val_1);
-    h1->put(key_2, val_2);
-    h1->put(key_3, val_3);
-    Object** values_array;
-    values_array = h1->values();
-    t_true(values_array[0]->equals(val_1));
-    t_true(values_array[1]->equals(val_2));
-    t_true(values_array[2]->equals(val_3));
-    delete h1, key_1, val_1, key_2, val_2, key_3, val_3;
-    delete[] values_array;
-    OK("9");
-}
-
 int main() {
     test1();
     test2();
@@ -260,7 +208,5 @@ int main() {
     test5();
     test6();
     test7();
-    test8();
-    test9();
     return 0;
 }
