@@ -9,6 +9,7 @@
 
 #pragma once;
 #include "object.h"
+#include <stddef.h>
 
 /**
  * Hashnode class is represent of key-value pairs
@@ -53,7 +54,11 @@ public:
     }
 
     bool equals(Object* object) {
-
+        if (object == nullptr) return false;
+        Hashnode* other = dynamic_cast<Hashnode*>(object);
+        if (other == nullptr) return false;
+        return this->_key->equals(other->_key) 
+            && this->_value->equals(other->_value);
     }
 
     size_t hash() {
