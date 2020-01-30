@@ -2,7 +2,7 @@
 #include <iostream>
 #include <string.h>
 #include "object.h"
-#include "map.h"
+#include "hashmap.h"
 #include "string.h"
 
 
