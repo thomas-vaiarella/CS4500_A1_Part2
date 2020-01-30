@@ -26,6 +26,7 @@ void test1() {
     t_true(h1->get_size() == 1);
     h1->put(key_2, val_2);
     t_true(h1->get_size() == 2);
+    delete h1, key_1, val_1, key_2, val_2;
     OK("1");
 }
 
@@ -43,6 +44,7 @@ void test2() {
     t_true(h1->get_size() == 1);
     h1->put(key_1, val_2);
     t_true(h1->get_size() == 1);
+    delete h1, key_1, val_1, val_2;
     OK("2");
 }
 
@@ -60,6 +62,7 @@ void test3() {
     h1->put(key_2, val_2);
     t_true(h1->get(key_1)->equals(val_1));
     t_true(h1->get(key_2)->equals(val_2));
+    delete h1, key_1, val_1, key_2, val_2;
     OK("3");
 }
 
@@ -77,6 +80,7 @@ void test4() {
     t_true(h1->get(key_1)->equals(val_1));
     h1->put(key_1, val_2);
     t_true(h1->get(key_1)->equals(val_2));
+    delete h1, key_1, val_1, val_2;
     OK("4");
 
 }
@@ -94,12 +98,18 @@ void test5() {
     String * val_2 = new String("2");
     h1->put(key_1, val_1);
     h1->put(key_2, val_2);
+    String* out1 = h1->remove(key_1);
+    String* out2 = h1->remove(key2);
     t_true(h1->remove(key_1)->equals(val_1));
     t_false(h1->remove(key_2)->equals(val_1));
     t_true(h1->remove(key_1) == NULL);
-
+    delete h1, key_1, val_1, key_2, val_2, out1, out2;
     OK("5");
 }
+
+// TODO HERE DONT MISS THIS
+
+// DELETE ME AND KEEP DELETING OBJECTS PLS DO IT NOW THX
 
 /**
  * test cases for containsKey() method
@@ -212,6 +222,7 @@ void test8() {
     t_true(keys_array[0]->equals(key_1));
     t_true(keys_array[1]->equals(key_2));
     t_true(keys_array[2]->equals(key_3));
+    delete[] keys_array;
     OK("8");
 }
 
@@ -237,6 +248,7 @@ void test9() {
     t_true(values_array[0]->equals(val_1));
     t_true(values_array[1]->equals(val_2));
     t_true(values_array[2]->equals(val_3));
+    delete[] values_array;
     OK("9");
 }
 
